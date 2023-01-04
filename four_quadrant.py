@@ -1,6 +1,7 @@
 import dash
 from dash import dcc
 from dash import html
+import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 
@@ -63,31 +64,35 @@ data1 = subset_df(df, AFRICA)
 # Create the app
 app = dash.Dash()
 
-# Define the layout of the app
-app.layout = html.Div(children=[
-    # First quadrant
-    html.Div(className="four columns", children=[
-        dcc.Graph(id="bar-chart", figure=px.bar(data1, x="location_key", y="new_confirmed", color="country"))
+
+fig = px.pie(data1, values="new_deceased", names="location_key")
+fig.update_traces(textposition='inside', textinfo='percent')
+
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+#create app with 2 rows and 2 columns in each row
+
+app.layout = html.Div([
+    dbc.Row([
+        dbc.Col(dcc.Graph(id="bar-chart", figure=px.bar(data1, x="location_key", y="new_confirmed", color="country")),width=6),
+        
+        dbc.Col(dcc.Graph(id="pie-chart", figure=fig),width=6)
     ]),
-    # Second quadrant
-    html.Div(className="four columns", children=[
-        dcc.Graph(id="pie-chart", figure=px.pie(data1, values="new_deceased", names="location_key"))
-    ]),
-    # Third quadrant
-    html.Div(className="four columns", children=[
-        dcc.Graph(id="line-chart", figure=px.line(data1, x="new_recovered", y="cumulative_deceased", color="country"))
-    ]),
-    # Fourth quadrant
-    html.Div(className="four columns", children=[
-        dcc.Graph(id="map", figure=px.choropleth(data1, locations="country", color="new_confirmed",
-                                                locationmode="country names"))
-    ]),
-])
+    dbc.Row([
+        dbc.Col(dcc.Graph(id="line-chart", figure=px.line(data1, x="date", y="cumulative_deceased", color="country")),width=3),
+        
+        dbc.Col(dcc.Graph(id="map", figure=px.choropleth(data1, locations="country", color="new_confirmed",
+                                                locationmode="country names")),width=9)
+        ]),
+    ])
+    
+
 
 #add external css for layout
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets) 
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets) 
 
 # Run the app
 if __name__ == "__main__":
