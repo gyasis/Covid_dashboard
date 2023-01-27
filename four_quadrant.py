@@ -80,10 +80,10 @@ app.layout = html.Div([
         dbc.Col(dcc.Graph(id="pie-chart", figure=fig),width=6)
     ]),
     dbc.Row([
-        dbc.Col(dcc.Graph(id="line-chart", figure=px.line(data1, x="date", y="cumulative_deceased", color="country")),width=3),
+        dbc.Col(dcc.Graph(id="line-chart", figure=px.line(data1, x="date", y="cumulative_deceased", color="country")),width=6),
         
         dbc.Col(dcc.Graph(id="map", figure=px.choropleth(data1, locations="country", color="new_confirmed",
-                                                locationmode="country names")),width=9)
+                                                locationmode="country names")),width=6)
         ]),
     ])
     

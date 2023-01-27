@@ -1,4 +1,4 @@
-
+ 
 # %%
 
 # %%
@@ -32,7 +32,7 @@ SOUTHAMERICA = ['AR','BO','BR','CL','CO','EC','FK','GF','GY','PY','PE','SR','UY'
 NORTHAMERICA = ['AG','BS','BB','BZ','CA','CR','CU','DM','DO','SV','GD','GT','HT','HN','JM','MX','NI','PA','PR','BL','KN','LC','MF','PM','VC','TT','US','VG','VI']
 # %%
 # shrink dataframe to date, country and new_confirmed
-df= df[['date','location_key', 'country', 'new_confirmed']]
+df= df[['date','location_key', 'country', 'new_confirmed','cumulative_deceased']]
 
 # %%
 # check if value in dataframe is string, date, or float values and if float take the absolute value of 
@@ -54,7 +54,7 @@ data1 = subset_df(df, AFRICA)
 
 # %%
 
-data2 = data1[data1.location_key == 'ZA']
+data2 = data1
 
 import plotly.express as px
 
@@ -64,8 +64,8 @@ pio.templates.default = "plotly_dark"
 
 # create bar graph with country and new confirmed cases
 
-fig = px.bar(data2, x="date", y=["new_confirmed", "new_deceased", "cumulative_deceased"], barmode="group")
-fig.show()
+# fig = px.bar(data2, x="date", y=["new_confirmed", "new_deceased", "cumulative_deceased"], barmode="group")
+# fig.show()
 
 # %%
 px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame="date", animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])
@@ -122,15 +122,15 @@ for country in df.country:
 collect = list(set(collect))
 # %%
 #eliminate countries that are not in the dataset
-df = df[~df.country.isin(collect)]
+df = df[~df.country.isin(collect)]fgggffff
 # %%
-len(df)
+len(df)fgggfff
 # %%
 df
 # %%
 #copy df to data3
 data3 = df.copy()
-# %%
+# %
 # match1 = df.country1.isin(data2.country)
 
 match1 = list(set(df.country))
