@@ -122,9 +122,9 @@ for country in df.country:
 collect = list(set(collect))
 # %%
 #eliminate countries that are not in the dataset
-df = df[~df.country.isin(collect)]fgggffff
+df = df[~df.country.isin(collect)]
 # %%
-len(df)fgggfff
+len(df)
 # %%
 df
 # %%
