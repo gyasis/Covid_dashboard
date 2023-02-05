@@ -8,21 +8,27 @@ import plotly.express as px
 import pandas as pd
 import requests 
 import io
+
+
 # Load your data here
-url = "https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv"
-from tqdm import tqdm
+#This code block is not showing the entire dataset 
+# url = "https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv"
+# from tqdm import tqdm
 
-response = requests.head(url)
-file_size = int(response.headers.get("Content-Length", 0))
+# response = requests.head(url)
+# file_size = int(response.headers.get("Content-Length", 0))
 
-# Read the file in chunks and update the progress bar after each chunk
-with requests.get(url, stream=True) as r:
-    with tqdm(total=file_size, unit='B', unit_scale=True) as pbar:
-        df = pd.DataFrame()
-        for chunk in r.iter_content(chunk_size=100000000):
-            df = pd.concat([df, pd.read_csv(io.StringIO(chunk.decode("utf-8")))])
-            pbar.update(100000000)
+# # Read the file in chunks and update the progress bar after each chunk
+# with requests.get(url, stream=True) as r:
+#     with tqdm(total=file_size, unit='B', unit_scale=True) as pbar:
+#         df = pd.DataFrame()
+#         for chunk in r.iter_content(chunk_size= 50000000):
+#             df = pd.concat([df, pd.read_csv(io.StringIO(chunk.decode("utf-8")))])
+#             pbar.update(50000000)
 # %% 
+df = pd.read_csv('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
+
+
 # prepare data
 #covert location_key to country name
 import pycountry
@@ -68,14 +74,14 @@ for value in df.columns:
         
 # %%
 
-
+# %%
 # %%
 def subset_df(dataframe,countrycode):
     return dataframe[dataframe.location_key.isin(countrycode)]
-
+# %%
 data1 = subset_df(df, AFRICA)
-
-
+# data1 = subset_df(df, ASIA)
+# %%
 # Create the app
 app = dash.Dash()
 
@@ -104,7 +110,7 @@ app.layout = html.Div([
     ]),
     dbc.Row([
         dbc.Col(dcc.Graph(id="line-chart", 
-                          figure=px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame="date", animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])),width=6),
+                          figure=px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame=data1.date.astype(str), animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])),width=6),
         
         dbc.Col(dcc.Graph(id="map", figure=px.choropleth(data1, locations="country", color="new_confirmed",
                                                 locationmode="country names")),width=6)

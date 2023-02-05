@@ -68,7 +68,7 @@ pio.templates.default = "plotly_dark"
 # fig.show()
 
 # %%
-px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame="date", animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])
+px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame=data1.date.astype(str), animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])
 # %%
 import wbgapi as wb
 
