@@ -112,8 +112,13 @@ app.layout = html.Div([
         dbc.Col(dcc.Graph(id="line-chart", 
                           figure=px.scatter(data1, x="new_confirmed", y="cumulative_deceased", animation_frame=data1.date.astype(str), animation_group="country", size="new_confirmed", color="country", hover_name="country", log_x=True, size_max=100, range_x=[10,100000], range_y=[0,10000])),width=6),
         
-        dbc.Col(dcc.Graph(id="map", figure=px.choropleth(data1, locations="country", color="new_confirmed",
-                                                locationmode="country names")),width=6)
+        dbc.Col(dcc.Graph(id="map", figure=px.choropleth(data1,
+        locations="country",
+        color="new_confirmed",
+        locationmode="country names",
+        animation_frame=data1.date.astype(str)  # set the column containing the time information
+    )
+), width=6)
         ]),
     ])
     
